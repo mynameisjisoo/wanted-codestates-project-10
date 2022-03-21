@@ -1,25 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchResults } from '../store/searchAsyncThunk';
 
-function SearchBar() {
+const SearchBar = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchResults('암'));
-  }, []);
 
-  const { loading, error, data } = useSelector((state) => state.search);
-  console.log(loading);
-  console.log(error);
-  console.log(data);
-
+  let timer;
   const onSearch = (e) => {
-    console.log(e.target.value);
-    // setTimeout(() => {
-    //   dispatch(fetchResults(e.target.value));
-    // }, 2000);
+    if (e.target.value === '') return;
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function () {
+      dispatch(fetchResults(e.target.value));
+    }, 1000);
   };
   return (
     <SearchContainer>
@@ -36,7 +33,7 @@ function SearchBar() {
       </ButtonWrapper>
     </SearchContainer>
   );
-}
+};
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: row;
