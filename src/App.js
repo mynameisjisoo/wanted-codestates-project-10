@@ -1,17 +1,12 @@
 import './App.css';
 import React from 'react';
-import SearchBar from './components/SearchBar';
 import styled from 'styled-components';
+import Main from './page/Main';
 
 function App() {
   return (
     <Container>
-      <h1>
-        국내 모든 임상시험 검색하고
-        <br />
-        온라인으로 참여하기{' '}
-      </h1>
-      <SearchBar />
+      <Main />
     </Container>
   );
 }

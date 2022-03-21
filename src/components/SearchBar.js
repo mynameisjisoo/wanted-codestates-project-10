@@ -9,8 +9,6 @@ const SearchBar = () => {
 
   let timer;
   const onSearch = (e) => {
-    if (e.target.value === '') return;
-
     if (timer) {
       clearTimeout(timer);
     }
@@ -51,6 +49,10 @@ const InputWrapper = styled.div`
     outline: none;
     font: inherit;
     width: inherit;
+
+    ::placeholder {
+      color: #a7afb7;
+    }
   }
 
   svg {
@@ -59,7 +61,7 @@ const InputWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  background-color: #357ae1;
+  background-color: #007be9;
   border-top-right-radius: 4rem;
   border-bottom-right-radius: 4rem;
   padding: 1.2rem 1.5rem;
