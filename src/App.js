@@ -19,5 +19,6 @@ function App() {
 const Container = styled.div`
   text-align: center;
   width: 80%;
+  margin: auto;
 `;
 export default App;

@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchResults } from '../store/searchAsyncThunk';
+
 function SearchBar() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchResults('암'));
+  }, []);
+
+  const { loading, error, data } = useSelector((state) => state.search);
+  console.log(loading);
+  console.log(error);
+  console.log(data);
+
+  const onSearch = (e) => {
+    console.log(e.target.value);
+    // setTimeout(() => {
+    //   dispatch(fetchResults(e.target.value));
+    // }, 2000);
+  };
   return (
     <SearchContainer>
       <InputWrapper>
         <BsSearch />
-        <input autoFocus placeholder="질환명을 입력해 주세요."></input>
+        <input
+          onChange={(e) => onSearch(e)}
+          autoFocus
+          placeholder="질환명을 입력해 주세요."
+        ></input>
       </InputWrapper>
       <ButtonWrapper>
         <button>검색</button>
