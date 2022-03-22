@@ -13,7 +13,7 @@ const SearchBar = () => {
       clearTimeout(timer);
     }
     timer = setTimeout(function () {
-      dispatch(fetchResults(e.target.value));
+      dispatch(fetchResults(e.target.value, true));
     }, 1000);
   };
   return (
