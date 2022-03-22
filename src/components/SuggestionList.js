@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Suggestion from './Suggestion';
 
 const SuggestionList = ({ data, loading }) => {
+  const [text, setText] = useState('검색중');
+  useEffect(() => {
+    if (data !== null && data.length === 0) {
+      setText('추천 검색어 없음');
+    } else if (loading) {
+      setText('검색중');
+    } else if (data) {
+      setText('추천검색어');
+    }
+  }, [data, loading]);
+
   return (
     <ListContainer>
-      {<p>{loading ? '검색중' : '추천검색어'}</p>}
-      {/* <p>추천검색어</p> */}
+      <p>{text}</p>
       <ul>
         {data?.map((el) => (
-          <Suggestion key={el.key} keyword={el.name} />
+          <Suggestion key={el.id} keyword={el.name} />
         ))}
       </ul>
     </ListContainer>

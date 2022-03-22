@@ -4,17 +4,23 @@ import { BsSearch } from 'react-icons/bs';
 
 const Suggestion = ({ keyword }) => {
   return (
-    <StyledLi>
+    <SuggestionItem
+      href={`https://clinicaltrialskorea.com/studies?condition=${keyword}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <BsSearch />
       <p>{keyword}</p>
-    </StyledLi>
+    </SuggestionItem>
   );
 };
 
-const StyledLi = styled.li`
+const SuggestionItem = styled.a`
+  display: block;
   margin: 0.2rem 0;
   padding: 0.4rem 1.5rem;
   cursor: pointer;
+
   p {
     display: inline-block;
     margin-left: 0.5rem;
