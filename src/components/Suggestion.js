@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
 
-const Suggestion = ({ keyword }) => {
+const Suggestion = ({ keyword, selected }) => {
   return (
     <SuggestionItem
       href={`https://clinicaltrialskorea.com/studies?condition=${keyword}`}
       target="_blank"
       rel="noopener noreferrer"
+      selected={selected}
     >
       <BsSearch />
       <p>{keyword}</p>
@@ -26,6 +27,7 @@ const SuggestionItem = styled.a`
     margin-left: 0.5rem;
   }
 
+  background-color: ${({ selected }) => (selected ? '#e3f3ff' : '#ffff')};
   &:hover {
     background-color: #e3f3ff;
   }

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import SearchBar from '../components/SearchBar';
-import SuggestionList from '../components/SuggestionList';
+// import SuggestionList from '../components/SuggestionList';
 
 const Main = () => {
-  const { loading, error, data } = useSelector((state) => state.search);
-  console.log(loading);
-  console.log(error);
-  console.log(data);
+  // const { loading, error, data } = useSelector((state) => state.search);
+  // console.log(loading);
+  // console.log(error);
+  // console.log(data);
   return (
     <StyledMain>
       <h1>
@@ -17,9 +17,9 @@ const Main = () => {
         온라인으로 참여하기
       </h1>
       <SearchBar />
-      {(data !== null || loading) && (
+      {/* {(data !== null || loading) && (
         <SuggestionList data={data} loading={loading} />
-      )}
+      )} */}
     </StyledMain>
   );
 };

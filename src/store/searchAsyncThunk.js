@@ -12,13 +12,12 @@ const instance = axios.create({
 export const fetchResults = createAsyncThunk(
   'search/fetchResult',
   async (keyword, forceUpdate) => {
-    console.log(keyword);
-    console.log(forceUpdate);
+    // console.log(keyword);
+    // console.log(forceUpdate);
     const response = await instance.get(
       `/api/v1/search-conditions/?name=${keyword}`,
       { forceUpdate, cache: true },
     );
-    console.log(response);
     return response;
   },
 );
