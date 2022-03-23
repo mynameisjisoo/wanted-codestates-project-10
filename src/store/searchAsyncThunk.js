@@ -4,14 +4,39 @@ import axios from 'axios';
 export const fetchResults = createAsyncThunk(
   'search/fetchResult',
   async (keyword) => {
-    // console.log(keyword);
-    // console.log(forceUpdate);
-    const response = await axios.get(
-      `https://api.clinicaltrialskorea.com/api/v1/search-conditions/?name=${keyword}`,
-    );
-    return response;
+    if (!getDatatInLocal(keyword)) {
+      const response = await axios.get(
+        `https://api.clinicaltrialskorea.com/api/v1/search-conditions/?name=${keyword}`,
+      );
+      const fetchedData = response.data.slice(0, 10);
+      setDataInLocal(keyword, fetchedData);
+      return fetchedData;
+    } else {
+      return getDatatInLocal(keyword);
+    }
   },
 );
+
+const setDataInLocal = (keyword, data) => {
+  const obj = {
+    value: data,
+    expire: Date.now() + 3600000,
+  };
+  const objString = JSON.stringify(obj);
+  window.localStorage.setItem(keyword, objString);
+};
+
+const getDatatInLocal = (keyword) => {
+  const obj = JSON.parse(localStorage.getItem(keyword));
+  // 로컬에 저장된 데이터 없는 경우
+  if (!obj) return;
+  // 만료시간 지난 경우
+  if (Date.now() > obj.expire) {
+    window.localStorage.removeItem(keyword);
+    return null;
+  }
+  return obj.keyword;
+};
 
 const initialState = {
   loading: false,
@@ -26,7 +51,7 @@ export const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchResults.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.data = payload.data.slice(0, 10);
+      state.data = payload;
     });
 
     builder.addCase(fetchResults.pending, (state) => {

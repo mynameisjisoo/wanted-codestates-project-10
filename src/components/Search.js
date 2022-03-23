@@ -20,7 +20,7 @@ const Search = () => {
     }
     timer = setTimeout(function () {
       if (keyword === '' || keyword === ' ') return;
-      dispatch(fetchResults(keyword, true));
+      dispatch(fetchResults(keyword));
     }, 1000);
   };
 
