@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchResults } from '../store/searchAsyncThunk';
 import Suggestion from './Suggestion';
 
-const SearchBar = () => {
+const Search = () => {
   const dispatch = useDispatch();
   const { loading, data } = useSelector((state) => state.search);
   const [open, setOpen] = useState(false);
@@ -14,22 +14,24 @@ const SearchBar = () => {
 
   let timer;
   const onInputFilled = (e) => {
+    const keyword = e.target.value;
     if (timer) {
       clearTimeout(timer);
     }
     timer = setTimeout(function () {
-      dispatch(fetchResults(e.target.value, false));
+      if (keyword === '' || keyword === ' ') return;
+      dispatch(fetchResults(keyword, true));
     }, 1000);
   };
 
-  //To handle ListContainer visiablity
+  // To handle ListContainer visiablity
   useEffect(() => {
     if (data) {
       setOpen(true);
     }
   }, [data]);
 
-  //To handle search status
+  // To handle search status
   useEffect(() => {
     if (data !== null && data.length === 0) {
       setStatus('추천 검색어 없음');
@@ -40,9 +42,9 @@ const SearchBar = () => {
     }
   }, [data, loading]);
 
-  // ***키누를 때 마다 초기화됨
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const onSelectKeyDown = (e) => {
+    if (!data) return;
     if (e.key === 'Enter') {
       e.target.value = data[selectedIdx].name;
     } else if (e.key === 'ArrowUp' && selectedIdx - 1 >= 0) {
@@ -60,8 +62,8 @@ const SearchBar = () => {
 
   return (
     <>
-      <SearchContainer>
-        <InputWrapper>
+      <SearchBarContainer>
+        <SearchInput>
           <BsSearch />
           <input
             onChange={onInputFilled}
@@ -70,11 +72,11 @@ const SearchBar = () => {
             autoFocus
             placeholder="질환명을 입력해 주세요."
           ></input>
-        </InputWrapper>
-        <ButtonWrapper onClick={onSearch}>검색</ButtonWrapper>
-      </SearchContainer>
+        </SearchInput>
+        <SearchButton onClick={onSearch}>검색</SearchButton>
+      </SearchBarContainer>
       {(open || loading) && (
-        <ListContainer>
+        <SuggestionContainer>
           <p>{status}</p>
           <ul>
             {data?.map((el, index) => (
@@ -85,12 +87,12 @@ const SearchBar = () => {
               />
             ))}
           </ul>
-        </ListContainer>
+        </SuggestionContainer>
       )}
     </>
   );
 };
-const SearchContainer = styled.div`
+const SearchBarContainer = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 1rem;
@@ -99,14 +101,17 @@ const SearchContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InputWrapper = styled.div`
+const SearchInput = styled.div`
   padding: 1.2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
 
   input {
     border: none;
     outline: none;
     font: inherit;
-    width: inherit;
+    width: 100%;
 
     ::placeholder {
       color: #a7afb7;
@@ -114,24 +119,24 @@ const InputWrapper = styled.div`
   }
 
   svg {
-    margin-right: 1rem;
+    margin: 0 0.5rem;
   }
 `;
 
-const ButtonWrapper = styled.button`
+const SearchButton = styled.button`
   background-color: #007be9;
   border-top-right-radius: 4rem;
   border-bottom-right-radius: 4rem;
   padding: 1.2rem 1.5rem;
-
   border: none;
   outline: none;
   color: #ffff;
   cursor: pointer;
   font: inherit;
   font-weight: bolder;
+  white-space: nowrap;
 `;
-const ListContainer = styled.div`
+const SuggestionContainer = styled.div`
   background-color: #ffff;
   text-align: left;
   border-radius: 2rem;
@@ -144,4 +149,4 @@ const ListContainer = styled.div`
     margin-left: 1.5rem;
   }
 `;
-export default SearchBar;
+export default Search;

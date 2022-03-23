@@ -1,14 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-// import { useSelector } from 'react-redux';
-import SearchBar from '../components/SearchBar';
-// import SuggestionList from '../components/SuggestionList';
+import Search from '../components/Search';
 
 const Main = () => {
-  // const { loading, error, data } = useSelector((state) => state.search);
-  // console.log(loading);
-  // console.log(error);
-  // console.log(data);
   return (
     <StyledMain>
       <h1>
@@ -16,10 +10,7 @@ const Main = () => {
         <br />
         온라인으로 참여하기
       </h1>
-      <SearchBar />
-      {/* {(data !== null || loading) && (
-        <SuggestionList data={data} loading={loading} />
-      )} */}
+      <Search />
     </StyledMain>
   );
 };
