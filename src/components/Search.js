@@ -42,6 +42,7 @@ const Search = () => {
     }
   }, [data, loading]);
 
+  // To handle move by keyboard
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const onSelectKeyDown = (e) => {
     if (!data) return;
@@ -68,6 +69,8 @@ const Search = () => {
           <input
             onChange={onInputFilled}
             onKeyDown={onSelectKeyDown}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setOpen(false)}
             ref={inputRef}
             autoFocus
             placeholder="질환명을 입력해 주세요."

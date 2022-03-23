@@ -33,7 +33,7 @@ const getDatatInLocal = (keyword) => {
   // 만료시간 지난 경우
   if (Date.now() > obj.expire) {
     window.localStorage.removeItem(keyword);
-    return null;
+    return;
   }
   return obj.keyword;
 };
