@@ -7,14 +7,13 @@ import Suggestion from './Suggestion';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
-  const { loading, error, data } = useSelector((state) => state.search);
-  console.log(loading, error, data);
+  const { loading, data } = useSelector((state) => state.search);
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('검색중');
-  const suggestionRef = useRef();
+  const inputRef = useRef();
 
   let timer;
-  const onSearch = (e) => {
+  const onInputFilled = (e) => {
     if (timer) {
       clearTimeout(timer);
     }
@@ -45,7 +44,6 @@ const SearchBar = () => {
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const onSelectKeyDown = (e) => {
     if (e.key === 'Enter') {
-      //검색창의 글씨 input으로 가져옴 -> 검색 누를 수 있게 함-> 검색 누르면 창띄우기?
       e.target.value = data[selectedIdx].name;
     } else if (e.key === 'ArrowUp' && selectedIdx - 1 >= 0) {
       setSelectedIdx(selectedIdx - 1);
@@ -54,26 +52,31 @@ const SearchBar = () => {
     }
   };
 
+  const onSearch = () => {
+    window.open(
+      `https://clinicaltrialskorea.com/studies?condition=${inputRef.current.value}`,
+    );
+  };
+
   return (
     <>
       <SearchContainer>
         <InputWrapper>
           <BsSearch />
           <input
-            onChange={onSearch}
+            onChange={onInputFilled}
             onKeyDown={onSelectKeyDown}
+            ref={inputRef}
             autoFocus
             placeholder="질환명을 입력해 주세요."
           ></input>
         </InputWrapper>
-        <ButtonWrapper>
-          <button>검색</button>
-        </ButtonWrapper>
+        <ButtonWrapper onClick={onSearch}>검색</ButtonWrapper>
       </SearchContainer>
       {(open || loading) && (
         <ListContainer>
           <p>{status}</p>
-          <ul ref={suggestionRef}>
+          <ul>
             {data?.map((el, index) => (
               <Suggestion
                 key={el.id}
@@ -115,21 +118,18 @@ const InputWrapper = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.button`
   background-color: #007be9;
   border-top-right-radius: 4rem;
   border-bottom-right-radius: 4rem;
   padding: 1.2rem 1.5rem;
 
-  button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    color: #ffff;
-    cursor: pointer;
-    font: inherit;
-    font-weight: bolder;
-  }
+  border: none;
+  outline: none;
+  color: #ffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bolder;
 `;
 const ListContainer = styled.div`
   background-color: #ffff;
