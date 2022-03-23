@@ -1,22 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { cacheAdapterEnhancer } from 'axios-extensions';
 
-const instance = axios.create({
-  baseURL: 'https://api.clinicaltrialskorea.com/',
-  // headers: { 'Cache-Control': 'no-cache' },
-  adapter: cacheAdapterEnhancer(axios.defaults.adapter, {
-    enabledByDefault: false,
-  }),
-});
 export const fetchResults = createAsyncThunk(
   'search/fetchResult',
-  async (keyword, forceUpdate) => {
+  async (keyword) => {
     // console.log(keyword);
     // console.log(forceUpdate);
-    const response = await instance.get(
-      `/api/v1/search-conditions/?name=${keyword}`,
-      { forceUpdate, cache: true },
+    const response = await axios.get(
+      `https://api.clinicaltrialskorea.com/api/v1/search-conditions/?name=${keyword}`,
     );
     return response;
   },
