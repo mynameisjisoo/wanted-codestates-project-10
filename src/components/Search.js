@@ -7,7 +7,7 @@ import Suggestion from './Suggestion';
 
 const Search = () => {
   const dispatch = useDispatch();
-  const { loading, data } = useSelector((state) => state.search);
+  const { loading, data, error } = useSelector((state) => state.search);
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState('검색중...');
   const [selectedIdx, setSelectedIdx] = useState(-1);
@@ -39,8 +39,10 @@ const Search = () => {
       setStatus('검색중...');
     } else if (data) {
       setStatus('추천검색어');
+    } else if (error) {
+      setStatus('요청 에러가 발생했습니다');
     }
-  }, [data, loading]);
+  }, [data, loading, error]);
 
   // To handle move by arrow key
   const onArrowKeyDown = (e) => {
@@ -82,19 +84,26 @@ const Search = () => {
         </SearchInput>
         <SearchButton onClick={openLink}>검색</SearchButton>
       </SearchBarContainer>
-      {(open || loading) && (
+
+      {error ? (
         <SuggestionContainer>
           <p>{status}</p>
-          <ul>
-            {data?.map((el, index) => (
-              <Suggestion
-                key={el.id}
-                keyword={el.name}
-                selected={index === selectedIdx}
-              />
-            ))}
-          </ul>
         </SuggestionContainer>
+      ) : (
+        (open || loading) && (
+          <SuggestionContainer>
+            <p>{status}</p>
+            <ul>
+              {data?.map((el, index) => (
+                <Suggestion
+                  key={el.id}
+                  keyword={el.name}
+                  selected={index === selectedIdx}
+                />
+              ))}
+            </ul>
+          </SuggestionContainer>
+        )
       )}
     </div>
   );
