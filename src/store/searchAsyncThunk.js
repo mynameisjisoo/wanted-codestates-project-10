@@ -28,14 +28,12 @@ const setDataInLocal = (keyword, data) => {
 
 const getDatatInLocal = (keyword) => {
   const obj = JSON.parse(localStorage.getItem(keyword));
-  // 로컬에 저장된 데이터 없는 경우
-  if (!obj) return;
-  // 만료시간 지난 경우
+  if (!obj) return null;
   if (Date.now() > obj.expire) {
     window.localStorage.removeItem(keyword);
-    return;
+    return null;
   }
-  return obj.keyword;
+  return obj.value;
 };
 
 const initialState = {

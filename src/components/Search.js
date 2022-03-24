@@ -9,7 +9,8 @@ const Search = () => {
   const dispatch = useDispatch();
   const { loading, data } = useSelector((state) => state.search);
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState('검색중');
+  const [status, setStatus] = useState('검색중...');
+  const [selectedIdx, setSelectedIdx] = useState(-1);
   const inputRef = useRef();
 
   let timer;
@@ -24,11 +25,10 @@ const Search = () => {
     }, 1000);
   };
 
-  // To handle ListContainer visiablity
+  // To handle suggestions visiability
   useEffect(() => {
-    if (data) {
-      setOpen(true);
-    }
+    setOpen(data ? true : false);
+    setSelectedIdx(-1);
   }, [data]);
 
   // To handle search status
@@ -36,15 +36,14 @@ const Search = () => {
     if (data !== null && data.length === 0) {
       setStatus('추천 검색어 없음');
     } else if (loading) {
-      setStatus('검색중');
+      setStatus('검색중...');
     } else if (data) {
       setStatus('추천검색어');
     }
   }, [data, loading]);
 
-  // To handle move by keyboard
-  const [selectedIdx, setSelectedIdx] = useState(-1);
-  const onSelectKeyDown = (e) => {
+  // To handle move by arrow key
+  const onArrowKeyDown = (e) => {
     if (!data) return;
     if (e.key === 'Enter') {
       e.target.value = data[selectedIdx].name;
@@ -55,7 +54,7 @@ const Search = () => {
     }
   };
 
-  const onSearch = () => {
+  const openLink = () => {
     window.open(
       `https://clinicaltrialskorea.com/studies?condition=${inputRef.current.value}`,
     );
@@ -68,7 +67,7 @@ const Search = () => {
           <BsSearch />
           <input
             onChange={onInputFilled}
-            onKeyDown={onSelectKeyDown}
+            onKeyDown={onArrowKeyDown}
             onFocus={() => setOpen(true)}
             onBlur={() => setOpen(false)}
             ref={inputRef}
@@ -76,7 +75,7 @@ const Search = () => {
             placeholder="질환명을 입력해 주세요."
           ></input>
         </SearchInput>
-        <SearchButton onClick={onSearch}>검색</SearchButton>
+        <SearchButton onClick={openLink}>검색</SearchButton>
       </SearchBarContainer>
       {(open || loading) && (
         <SuggestionContainer>
