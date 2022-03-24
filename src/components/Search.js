@@ -46,13 +46,19 @@ const Search = () => {
   const onArrowKeyDown = (e) => {
     if (!data) return;
     if (e.key === 'Enter') {
-      e.target.value = data[selectedIdx].name;
+      openLink();
     } else if (e.key === 'ArrowUp' && selectedIdx - 1 >= 0) {
       setSelectedIdx(selectedIdx - 1);
     } else if (e.key === 'ArrowDown' && selectedIdx + 1 < data.length) {
       setSelectedIdx(selectedIdx + 1);
     }
   };
+
+  useEffect(() => {
+    if (selectedIdx >= 0) {
+      inputRef.current.value = data[selectedIdx].name;
+    }
+  }, [selectedIdx]);
 
   const openLink = () => {
     window.open(
@@ -61,16 +67,15 @@ const Search = () => {
   };
 
   return (
-    <>
+    <div>
       <SearchBarContainer>
         <SearchInput>
           <BsSearch />
           <input
+            ref={inputRef}
             onChange={onInputFilled}
             onKeyDown={onArrowKeyDown}
             onFocus={() => setOpen(true)}
-            onBlur={() => setOpen(false)}
-            ref={inputRef}
             autoFocus
             placeholder="질환명을 입력해 주세요."
           ></input>
@@ -91,7 +96,7 @@ const Search = () => {
           </ul>
         </SuggestionContainer>
       )}
-    </>
+    </div>
   );
 };
 const SearchBarContainer = styled.div`

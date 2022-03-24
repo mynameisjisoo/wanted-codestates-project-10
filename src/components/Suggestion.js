@@ -21,13 +21,13 @@ const SuggestionItem = styled.a`
   margin: 0.2rem 0;
   padding: 0.4rem 1.5rem;
   cursor: pointer;
+  background-color: ${({ selected }) => (selected ? '#e3f3ff' : '#ffff')};
 
   p {
     display: inline-block;
     margin-left: 0.5rem;
   }
 
-  background-color: ${({ selected }) => (selected ? '#e3f3ff' : '#ffff')};
   &:hover {
     background-color: #e3f3ff;
   }
