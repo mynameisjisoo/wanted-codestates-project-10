@@ -9,8 +9,9 @@ const Search = () => {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.search);
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState('검색중...');
+  const [status, setStatus] = useState('');
   const [selectedIdx, setSelectedIdx] = useState(-1);
+  const searchRef = useRef();
   const inputRef = useRef();
 
   let timer;
@@ -68,8 +69,20 @@ const Search = () => {
     );
   };
 
+  const handleFocus = (e) => {
+    if (!searchRef.current.contains(e.target)) {
+      setOpen(false);
+    } else {
+      inputRef.current.value && setOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', handleFocus);
+  }, []);
+
   return (
-    <div>
+    <div ref={searchRef}>
       <SearchBarContainer>
         <SearchInput>
           <BsSearch />
@@ -77,7 +90,6 @@ const Search = () => {
             ref={inputRef}
             onChange={onInputFilled}
             onKeyDown={onArrowKeyDown}
-            onFocus={() => setOpen(true)}
             autoFocus
             placeholder="질환명을 입력해 주세요."
           ></input>
