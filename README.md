@@ -35,6 +35,13 @@ npm start
 ![Netlify](https://img.shields.io/badge/netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=black)
 
 ## 구현 사항
+- [x] 검색 영역 클론 코딩
+- [x] 질환명 검색 시 검색어 추천 
+- [x] API 호출 최적화
+    - 호출별로 로컬 캐싱을 구현 (expire time까지도 있으면 좋음)
+    - 입력 마다 호출하지 않고 자신만의 전략으로 API 호출 횟수를 줄입니다.
+- [x] 키보드만으로도 추천 검색어들로 이동이 가능
+- [x] 배포하여 웹에서 바로 사용 할 수 있도록 제공
 
 ### 1. 키보드 조작으로 추천 검색어 이동
 
